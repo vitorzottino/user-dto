@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br" layout:decorate="~{template.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://thymeleaf.org">
+<head>
+    <title>Title</title>
+</head>
+<body>
+<h1>Editar</h1>
+<div layout:fragment="conteudo">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h2>Alterar Usuario</h2>
+                <div class="alert alert-success alert-dismissible fade show" th:if="${mensagem}">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <span th:text="${mensagem}"></span>
+                </div>
+
+                <form action="#" th:action="@{/users/{id}(id=${user.id})}" th:object="${user}" method="post">
+                    <input type="hidden" name="_method" value="put">
+                    <input type="hidden" name="moment" id="moment" th:field="*{moment}">
+
+                    <div class="row mb-3">
+                        <label for="nome" class="col-sm-1 col-form-label">Nome:</label>
+                        <div class="col-sm-5">
+                            <input id="nome" class="form-control" type="text" th:field="*{nome}" />
+                        </div>
+                        <div class="col-sm-5">
+                            <span class="mensagem" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-1 col-form-label" for="email">E-mail:</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" id="email" th:field="*{email}" type="text">
+                        </div>
+                        <div class="col-sm-5">
+                            <span class="mensagem" th:errors="*{email}"
+                                  th:if="${#fields.hasErrors('email')}"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-1 col-form-label" for="dataNascimento">Data de Nascimento:</label>
+                        <div class="col-sm-2">
+                            <input class="form-control" id="dataNascimento" th:field="*{dataNascimento}" type="date">
+                        </div>
+                        <div class="col-sm-5">
+								<span class="mensagem" th:errors="*{dataNascimento}"
+                                      th:if="${#fields.hasErrors('dataNascimento')}"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-1 col-form-label" for="senha">Senha:</label>
+                        <div class="col-sm-2">
+                            <input class="form-control" id="senha" th:field="*{senha}" type="password">
+                        </div>
+                        <div class="col-sm-5">
+								<span class="mensagem" th:errors="*{senha}"
+                                      th:if="${#fields.hasErrors('senha')}"></span>
+                        </div>
+                    </div>
+
+                    <input class="btn btn-primary" type="submit" value="Alterar" />
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
