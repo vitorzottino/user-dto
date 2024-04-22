@@ -2,6 +2,7 @@ package br.com.fiap.mvcusuario.dto;
 
 
 import br.com.fiap.mvcusuario.models.User;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

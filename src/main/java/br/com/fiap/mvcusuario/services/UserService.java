@@ -19,12 +19,13 @@ public class UserService {
     private UserRepository repository;
 
     @Transactional(readOnly = true)
-    public User findById(Long id) {
+    public UserDTO findById(Long id) {
 
-        return repository.findById(id).orElseThrow(
+        User user =  repository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("Recurso não encontrado")
         );
 
+        return new UserDTO(user);
 
     }
 
@@ -33,21 +34,25 @@ public class UserService {
 
         List<User> user = repository.findAll();
 
-
-
         return user.stream().map(UserDTO::new).collect(Collectors.toList());
     }
 
     @Transactional
-    public User insert(User user) {
-
-        user.setMoment(Instant.now());
-        return repository.save(user);
+    public UserDTO insert(UserDTO dto) {
+        User entity = new User();
+        copyDtoToEntity(dto, entity);
+        entity.setMoment(Instant.now());
+        entity = repository.save(entity);
+        return  new UserDTO(entity);
     }
 
     @Transactional
-    public User update(User user) {
-        return repository.save(user);
+    public UserDTO update(Long id, UserDTO dto) {
+        User entity = repository.getReferenceById(id);
+        copyDtoToEntity(dto, entity);
+        entity = repository.save(entity);
+        return new UserDTO(entity);
+
     }
 
     @Transactional
@@ -61,4 +66,16 @@ public class UserService {
             throw new IllegalArgumentException("Falha de integridade referencial");
         }
     }
+
+    private void copyDtoToEntity(UserDTO dto, User entity) {
+
+        entity.setNome(dto.getNome());
+        entity.setEmail(dto.getEmail());
+        entity.setSenha(dto.getSenha());
+        entity.setDataNascimento(dto.getDataNascimento());
+
+
+
+    }
+
 }
