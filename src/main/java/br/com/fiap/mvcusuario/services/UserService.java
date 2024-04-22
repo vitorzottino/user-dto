@@ -1,5 +1,6 @@
 package br.com.fiap.mvcusuario.services;
 
+import br.com.fiap.mvcusuario.dto.MinUserDTO;
 import br.com.fiap.mvcusuario.dto.UserDTO;
 import br.com.fiap.mvcusuario.models.User;
 import br.com.fiap.mvcusuario.repositories.UserRepository;
@@ -56,6 +57,15 @@ public class UserService {
     }
 
     @Transactional
+    public MinUserDTO safeUpdate(Long id, MinUserDTO dto) {
+        User entity = repository.getReferenceById(id);
+        copyMinDtoToEntity(dto, entity);
+        entity = repository.save(entity);
+        return new MinUserDTO(entity);
+
+    }
+
+    @Transactional
     public void delete(Long id) {
         if (!repository.existsById(id)) {
             throw new IllegalArgumentException("Usuário inválido - id: " + id);
@@ -74,8 +84,12 @@ public class UserService {
         entity.setSenha(dto.getSenha());
         entity.setDataNascimento(dto.getDataNascimento());
 
+    }
 
+    private void copyMinDtoToEntity(MinUserDTO dto, User entity) {
 
+        entity.setEmail(dto.getEmail());
+        entity.setSenha(dto.getSenha());
     }
 
 }

@@ -44,6 +44,11 @@
                                 <input class="btn btn-primary btn-xs" type="submit" value="Editar">
                             </form>
                         </td>
+                        <td>
+                            <form action="" th:action="@{/users/safe-update/{id}(id=${userDto.id})}" th:object="${minUserDto}" method="get">
+                                <input class="btn btn-primary btn-xs" type="submit" value="Safe Edit">
+                            </form>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

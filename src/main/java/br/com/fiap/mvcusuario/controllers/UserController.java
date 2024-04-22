@@ -1,5 +1,6 @@
 package br.com.fiap.mvcusuario.controllers;
 
+import br.com.fiap.mvcusuario.dto.MinUserDTO;
 import br.com.fiap.mvcusuario.dto.UserDTO;
 import br.com.fiap.mvcusuario.models.User;
 import br.com.fiap.mvcusuario.services.UserService;
@@ -64,6 +65,18 @@ public class UserController {
     @DeleteMapping("/{id}")
     public String delete(@PathVariable Long id){
         service.delete(id);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/safe-update/{id}")
+    public String safeUpdate(@PathVariable("id") Long id,
+                         @Valid MinUserDTO userDto,
+                         BindingResult result){
+        if(result.hasErrors()){
+            userDto.setId(id);
+            return "/usuarios/editar-usuario-email";
+        }
+        userDto = service.safeUpdate(id, userDto);
         return "redirect:/users";
     }
 }
